@@ -1,0 +1,20 @@
+#
+# Docker Compose file for SFTPortress: A Persistent SFTP Backup Server
+#
+# This configuration uses the 'atmoz/sftp' image, a popular and trusted
+# solution for running an SFTP-only service in Docker.
+# It is configured to be deployed easily via the Portainer UI.
+#
+
+version: '3.8'
+
+services:
+  sftp-server:
+    image: atmoz/sftp:latest
+    container_name: sftportress-server
+    volumes:
+      - ./sftp-data:/home/${SFTP_USER:-backupuser}/uploads
+    ports:
+      - "2222:22"
+    command: ${SFTP_USER:-backupuser}:${SFTP_PASS:-changeme}:1001
+    restart: unless-stopped
